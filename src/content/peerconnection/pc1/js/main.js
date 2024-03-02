@@ -8,6 +8,22 @@
 
 'use strict';
 
+// const sourceVideo = document.getElementById('sourceVideo');
+
+// sourceVideo.addEventListener('canplay', () => {
+//   let stream;
+//   const fps = 0;
+//   if (sourceVideo.captureStream) {
+//     stream = sourceVideo.captureStream(fps);
+//   } else if (sourceVideo.mozCaptureStream) {
+//     stream = sourceVideo.mozCaptureStream(fps);
+//   } else {
+//     console.error('Stream capture is not supported');
+//     stream = null;
+//   }
+//   rightVideo.srcObject = stream;
+// });
+
 const startButton = document.getElementById('startButton');
 const callButton = document.getElementById('callButton');
 const hangupButton = document.getElementById('hangupButton');
@@ -57,17 +73,14 @@ function getOtherPc(pc) {
 }
 
 async function start() {
+  localVideo.play();
   console.log('Requesting local stream');
   startButton.disabled = true;
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia({audio: true, video: true});
-    console.log('Received local stream');
-    localVideo.srcObject = stream;
-    localStream = stream;
-    callButton.disabled = false;
-  } catch (e) {
-    alert(`getUserMedia() error: ${e.name}`);
-  }
+
+  // const stream = await navigator.mediaDevices.getUserMedia({audio: true, video: true});
+  localStream = localVideo.captureStream(/* fps */ 0);
+  console.log('Received local stream');
+  callButton.disabled = false;
 }
 
 async function call() {
